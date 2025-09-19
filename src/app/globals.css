@@ -600,3 +600,11 @@ label {
   color: #00ffff;
   margin-bottom: 20px;
 }
+.nav-link {
+  color: #fff !important;
+  transition: color 0.2s ease-in-out;
+}
+
+.nav-link:hover {
+  color: #00ffff !important; /* Neon cyan */
+}
