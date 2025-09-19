@@ -1,8 +1,10 @@
 // src/app/posts/[id]/page.tsx
 import Link from "next/link";
-import { blogs } from "@/app/data/blogs";
+import Image from "next/image";
+import { blogs, type Blog } from "@/app/data/blogs";
 
-export async function generateMetadata({ params }: { params: { id: string } }) {
+// ✅ Dynamic Metadata
+export async function generateMetadata({ params }: { params: any }) {
   const blog = blogs.find((b) => b.id === parseInt(params.id));
   return {
     title: blog ? blog.title : "Blog Not Found",
@@ -10,8 +12,9 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
   };
 }
 
-export default function BlogDetail({ params }: { params: { id: string } }) {
-  const blog = blogs.find((b) => b.id === parseInt(params.id));
+// ✅ Blog Detail Page
+export default function BlogDetail({ params }: { params: any }) {
+  const blog: Blog | undefined = blogs.find((b) => b.id === parseInt(params.id));
 
   if (!blog) {
     return <p className="text-white p-5">Blog not found.</p>;
@@ -23,11 +26,12 @@ export default function BlogDetail({ params }: { params: { id: string } }) {
         className="card bg-dark text-light border-info p-4"
         style={{ maxWidth: "900px", width: "100%" }}
       >
-        {/* Image */}
-        <img
+        <Image
           src={blog.image}
           alt={blog.title}
           className="img-fluid mb-3 mx-auto d-block"
+          width={800}
+          height={250}
           style={{
             maxHeight: "250px",
             width: "70%",
@@ -35,25 +39,13 @@ export default function BlogDetail({ params }: { params: { id: string } }) {
             borderRadius: "8px",
           }}
         />
-
-        {/* Title & Date */}
         <h2 className="fw-bold text-center">{blog.title}</h2>
         <p className="text-info text-center mb-4">{blog.date}</p>
-
-        {/* Content */}
         <div className="px-2 mb-4">
-          <p
-            style={{
-              lineHeight: "1.8rem",
-              fontSize: "1.05rem",
-              color: "#ccc",
-            }}
-          >
+          <p style={{ lineHeight: "1.8rem", fontSize: "1.05rem", color: "#ccc" }}>
             {blog.content}
           </p>
         </div>
-
-        {/* Back Button */}
         <div className="text-center">
           <Link
             href="/"

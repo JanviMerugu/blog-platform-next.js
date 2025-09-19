@@ -3,11 +3,13 @@
 import useSWR from "swr";
 import Link from "next/link";
 import { useState } from "react";
+import Image from "next/image";
+import type { Blog } from "@/app/data/blogs";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export default function BlogList() {
-  const { data: blogs, error } = useSWR("/api/posts", fetcher);
+  const { data: blogs, error } = useSWR<Blog[]>("/api/posts", fetcher);
   const [currentPage, setCurrentPage] = useState(1);
   const blogsPerPage = 3;
 
@@ -25,23 +27,22 @@ export default function BlogList() {
 
       {/* Blog Grid */}
       <div className="row">
-        {displayedBlogs.map((blog: any) => (
+        {displayedBlogs.map((blog) => (
           <div className="col-md-4 mb-4" key={blog.id}>
             <div className="card bg-dark text-light border-info h-100">
-              <img
+              <Image
                 src={blog.image}
                 className="card-img-top"
                 alt={blog.title}
+                width={400}
+                height={200}
                 style={{ height: "180px", objectFit: "cover" }}
               />
               <div className="card-body">
                 <p className="text-info mb-1">{blog.date}</p>
                 <h5 className="card-title">{blog.title}</h5>
                 <p className="card-text">{blog.excerpt}</p>
-                <Link
-                  href={`/posts/${blog.id}`}
-                  className="text-info fw-bold"
-                >
+                <Link href={`/posts/${blog.id}`} className="text-info fw-bold">
                   Read More →
                 </Link>
               </div>

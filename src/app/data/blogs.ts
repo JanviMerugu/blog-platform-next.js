@@ -1,6 +1,15 @@
 // src/app/data/blogs.ts
 
-export const blogs = [
+export interface Blog {
+  id: number;
+  title: string;
+  excerpt: string;
+  content: string;
+  date: string;
+  image: string;
+}
+
+export const blogs: Blog[] = [
   {
     id: 1,
     title: "Vacation Rental Safety: How to Ensure a Secure Stay",
